@@ -1,0 +1,10 @@
+{
+    "PerformanceScore": 75,
+    "Assessment": " Needs Optimization",
+    "TotalRequests": 25,
+    "SuccessfulRequests": 25,
+    "FailedRequests": 0,
+    "AverageResponseTime": 1081.8,
+    "P95": 2869.0,
+    "P99": 3296.52
+}
