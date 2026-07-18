@@ -16,6 +16,7 @@ from trend_analyzer import analyze_trend
 from trend_chart import generate_trend_chart
 from deployment import get_deployment_decision
 from executive_summary import generate_executive_summary
+from quality_gate import quality_gate
 
 
 if len(sys.argv) < 2:
@@ -93,3 +94,13 @@ save_execution(metrics, score)
 analyze_trend()
 generate_trend_chart()
 print("Program Completed Successfully.")
+exit_code = quality_gate(score)
+sys.exit(exit_code)
+
+
+exit_code = quality_gate(score)
+
+print("Program Completed Successfully.")
+
+# Enable only in CI/Jenkins
+# sys.exit(exit_code)
