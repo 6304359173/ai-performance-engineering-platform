@@ -1,6 +1,8 @@
 import os
 
-def generate_dashboard(metrics, score, assessment):
+def generate_dashboard(metrics, score, assessment,
+                       deployment_status,
+                       deployment_message):
 
     os.makedirs("reports", exist_ok=True)
 
@@ -87,7 +89,15 @@ body {{
     color:#d35400;
     font-weight:bold;
 }}
+<div class="section">
 
+<h2>Deployment Decision</h2>
+
+<h3>{deployment_status}</h3>
+
+<p>{deployment_message}</p>
+
+</div>
 .footer {{
 
     text-align:center;

@@ -14,6 +14,8 @@ from dashboard import generate_dashboard
 from history_tracker import save_execution
 from trend_analyzer import analyze_trend
 from trend_chart import generate_trend_chart
+from deployment import get_deployment_decision
+from executive_summary import generate_executive_summary
 
 
 if len(sys.argv) < 2:
@@ -35,6 +37,15 @@ score = calculate_score(metrics)
 # Assessment
 assessment = get_assessment(score)
 
+deployment_status, deployment_message = get_deployment_decision(score)
+
+executive_summary = generate_executive_summary(
+    metrics,
+    score,
+    assessment,
+    deployment_status
+)
+
 # AI Recommendations
 recommendations = get_recommendation(metrics)
 
@@ -46,6 +57,13 @@ summary = transaction_summary(df)
 
 print_transaction_summary(summary)
 
+print("\n" + "=" * 65)
+print("DEPLOYMENT DECISION")
+print("=" * 65)
+
+print(f"Status  : {deployment_status}")
+print(f"Reason  : {deployment_message}")
+
 # Generate Chart
 generate_transaction_chart(summary)
 
@@ -55,9 +73,20 @@ generate_pdf(metrics, recommendations)
 
 # Generate JSON
 export_json(metrics, score, assessment)
+print("\n" + "=" * 65)
+print("AI EXECUTIVE SUMMARY")
+print("=" * 65)
+
+print(executive_summary)
 
 # Generate HTML Dashboard
-generate_dashboard(metrics, score, assessment)
+generate_dashboard(
+    metrics,
+    score,
+    assessment,
+    deployment_status,
+    deployment_message
+)
 
 # Save Execution History
 save_execution(metrics, score)
