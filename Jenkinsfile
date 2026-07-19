@@ -31,7 +31,13 @@ pipeline {
                 '''
             }
         }
-
+    stage('Verify Kubernetes') {
+    steps {
+        bat 'kubectl version'
+        bat 'kubectl config current-context'
+        bat 'kubectl get nodes'
+    }
+}
         stage('Deploy Kubernetes Job') {
             steps {
                 bat 'kubectl apply -f kubernetes/job.yaml'
