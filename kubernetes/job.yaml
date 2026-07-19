@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: ai-performance-job
+
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+      - name: ai-performance-platform
+
+        image: sigh1234/ai-performance-platform:1.0
+
+        imagePullPolicy: Always
+
+  backoffLimit: 1

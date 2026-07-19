@@ -2,8 +2,20 @@ pipeline {
     agent any
 
     stages {
-
-        
+        stage('Show Workspace') {
+    steps {
+        bat 'dir'
+        bat 'dir docker'
+    }
+}
+     stage('Verify Workspace') {
+    steps {
+        bat 'echo Current Directory'
+        bat 'cd'
+        bat 'dir'
+        bat 'dir docker'
+    }
+}   
 
         stage('Build Docker Image') {
             steps {
@@ -13,7 +25,10 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                bat 'docker push sigh1234/ai-performance-platform:1.0'
+                bat '''
+                cd %WORKSPACE%
+                docker build -t sigh1234/ai-performance-platform:1.0 -f docker\\Dockerfile .
+                '''
             }
         }
 
