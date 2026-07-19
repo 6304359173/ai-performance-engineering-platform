@@ -5,6 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                git branch: 'main',
                 git 'https://github.com/6304359173/ai-performance-engineering-platform.git'
             }
         }
