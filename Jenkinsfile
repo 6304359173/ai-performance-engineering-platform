@@ -23,27 +23,38 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                bat '''
-                cd %WORKSPACE%
-                docker build -t sigh1234/ai-performance-platform:1.0 -f docker\\Dockerfile .
-                '''
-            }
-        }
-    stage('Verify Kubernetes') {
+       stage('Build Docker Image') {
     steps {
-        bat 'kubectl version'
-        bat 'kubectl config current-context'
-        bat 'kubectl get nodes'
+        bat 'docker build -t sigh1234/ai-performance-platform:1.0 -f docker/Dockerfile .'
     }
 }
-        stage('Deploy Kubernetes Job') {
-            steps {
-                bat 'kubectl apply -f kubernetes/job.yaml'
-            }
-        }
 
+stage('Push Docker Image') {
+    steps {
+        bat 'docker push sigh1234/ai-performance-platform:1.0'
+    }
+}
+
+stage('Verify Kubernetes') {
+    steps {
+        bat '''
+        set KUBECONFIG=%USERPROFILE%\\.kube\\config
+        kubectl version
+        kubectl config current-context
+        kubectl get nodes
+        '''
+    }
+}
+
+stage('Deploy Kubernetes Job') {
+    steps {
+        bat '''
+        set KUBECONFIG=%USERPROFILE%\\.kube\\config
+        kubectl delete job ai-performance-job --ignore-not-found=true
+        kubectl apply -f kubernetes\\job.yaml
+        '''
+    }
+}
         stage('Wait for Job') {
             steps {
                 bat 'kubectl wait --for=condition=complete job/ai-performance-job --timeout=300s'
